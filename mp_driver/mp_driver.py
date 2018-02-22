@@ -3,6 +3,7 @@ import re
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
+from selenium.webdriver.remote.remote_connection import LOGGER
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from .exceptions import LoginError
@@ -44,6 +45,7 @@ class MPDriver(webdriver.Chrome, webdriver.Firefox, webdriver.Ie):
     def __init__(self, env='csdev9', browser='chrome'):
         self.env = env.lower()
         self.ENTRY_URL = self.ENTRY_URL.format(env=self.env)
+        LOGGER.setLevel(logging.CRITICAL)
         if browser.lower() == 'ie':
             webdriver.Ie.__init__(self)
         elif browser.lower() == 'firefox':
