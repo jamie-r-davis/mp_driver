@@ -11,7 +11,7 @@ from .exceptions import LoginError
 
 def get_login_messages(driver):
     """
-    Detect error messages on login page and raise a LoginError 
+    Detect error messages on login page and raise a LoginError
     with the first message found.
     """
     messages = []
@@ -65,7 +65,7 @@ class MPDriver(webdriver.Chrome, webdriver.Firefox, webdriver.Ie):
             get_login_messages(self)
         except LoginError as e:
             raise
-        
+
         # wait for duo authentication and mpathways to finish loading
         WebDriverWait(self, 300).until(EC.title_is('My Homepage'))
 
@@ -81,7 +81,7 @@ class MPDriver(webdriver.Chrome, webdriver.Firefox, webdriver.Ie):
         Derive the MPathways environment from the current_url.
         """
         pattern = r"https?://(?P<env>{\w+})\.dsc\.umich\.edu"
-        return re.match(patten, self.current_url)['env']
+        return re.match(pattern, self.current_url)['env']
 
     def switch_to_content(self, frame='TargetContent'):
         """
