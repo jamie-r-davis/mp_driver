@@ -41,7 +41,19 @@ class MPDriver(webdriver.Chrome,
                webdriver.Firefox,
                webdriver.Ie,
                webdriver.Remote):
-    """Webdriver extension tailored to functioning in MPathways environments"""
+    """
+    Webdriver extension tailored to functioning in MPathways environments.
+
+    Parameters
+    ----------
+    env : str
+        The MPathways environment to use (csprod, csqa9, csdev9, etc.).
+    browser : str
+        The browser to use ('chrome', 'firefox', 'ie', 'remote').
+    kwargs : kwargs
+        Keyword arguments to pass to the webdriver browser constructor.
+        Generally things like `command_executor` and `desired_capabilities`.
+    """
 
     ENTRY_URL = 'https://{env}.dsc.umich.edu/services/mpathways'
 
@@ -78,8 +90,11 @@ class MPDriver(webdriver.Chrome,
         """
         Wait for spinner to disappear.
         """
-        WebDriverWait(self, timeout).until(EC.invisibility_of_element_located((By.ID, 'WAIT_win0')))
-        WebDriverWait(self, timeout).until(EC.invisibility_of_element_located((By.ID, 'saveWait_win0')))
+        wait_loc = (By.ID, 'processing')
+        save_loc = (By.XPATH, "//*[starts-with(@id, 'saveWait']")
+        wait = WebDriverWait(self, timeout)
+        wait.until(EC.invisibility_of_element_located(wait_loc))
+        wait.until(EC.invisibility_of_element_located(save_loc))
 
     def mp_env(self):
         """
