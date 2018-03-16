@@ -37,21 +37,26 @@ def get_login_messages(driver):
         raise LoginError(messages)
 
 
-class MPDriver(webdriver.Chrome, webdriver.Firefox, webdriver.Ie):
+class MPDriver(webdriver.Chrome,
+               webdriver.Firefox,
+               webdriver.Ie,
+               webdriver.Remote):
     """Webdriver extension tailored to functioning in MPathways environments"""
 
     ENTRY_URL = 'https://{env}.dsc.umich.edu/services/mpathways'
 
-    def __init__(self, env='csdev9', browser='chrome'):
+    def __init__(self, env='csdev9', browser='chrome', **kwargs):
         self.env = env.lower()
         self.ENTRY_URL = self.ENTRY_URL.format(env=self.env)
         LOGGER.setLevel(logging.CRITICAL)
         if browser.lower() == 'ie':
-            webdriver.Ie.__init__(self)
+            webdriver.Ie.__init__(self, **kwargs)
         elif browser.lower() == 'firefox':
-            webdriver.Firefox.__init__(self)
+            webdriver.Firefox.__init__(self, **kwargs)
+        elif browser.lower() == 'remote':
+            webdriver.Remote.__init__(self, **kwargs)
         else:
-            webdriver.Chrome.__init__(self)
+            webdriver.Chrome.__init__(self, **kwargs)
 
 
     def mp_login(self, username, password):
