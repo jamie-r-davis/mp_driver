@@ -84,7 +84,7 @@ class MPDriver(webdriver.Chrome,
             raise
 
         # wait for duo authentication and mpathways to finish loading
-        WebDriverWait(self, 300).until(EC.title_is('My Homepage'))
+        WebDriverWait(self, 300).until(lambda x: 'homepage' in x.title.lower())
 
     def mp_wait(self, timeout=30):
         """
